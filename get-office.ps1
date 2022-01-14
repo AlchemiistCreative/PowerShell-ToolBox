@@ -1,5 +1,7 @@
 #### Require AD Module / RSAT ####
 
+$ErrorActionPreference = 'SilentlyContinue'
+
 function get-office($computername) {
     
     Write-Host "Installed version: "
@@ -8,32 +10,24 @@ function get-office($computername) {
 
 }
 
-
-
 function get-computers{
-
-
 $computers_ = Get-ADComputer -Filter * 
 $computers__ = $computers_.Name
-foreach($c in $computers__){
-
-
-
-if(Test-WSMAN $c  -ErrorAction SilentlyContinue ){
-    Write-Host "$c in reachable"
+    foreach($c in $computers__){
+        if(Test-WSMAN $c ){
+            Write-Host "$c is reachable"
     
-    get-office $c
+            get-office $c
 
-}else{
+        }else{
     
-    Write-Host "$c is unreachable"
+            Write-Host "$c is unreachable"
+        }
+    }
 }
-
-}
-
-
-}
-
 
 get-computers
+
+
+
 
